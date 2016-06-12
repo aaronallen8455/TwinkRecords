@@ -20,11 +20,13 @@ class Photo extends AbstractEntity implements EntityInterface
     const URL = 'url';
     const THUMBNAIL = 'thumbnail';
     const TITLE = 'title';
+    const SORT_ORDER = 'sort_order';
     
     protected $photo_id;
     protected $url;
     protected $thumbnail;
     protected $title;
+    protected $sort_order;
 
     /**
      * Get data
@@ -37,7 +39,8 @@ class Photo extends AbstractEntity implements EntityInterface
             self::ID => $this->photo_id,
             self::URL => $this->url,
             self::THUMBNAIL => $this->thumbnail,
-            self::TITLE => $this->title
+            self::TITLE => $this->title,
+            self::SORT_ORDER => $this->sort_order
         ];
     }
 
@@ -49,7 +52,9 @@ class Photo extends AbstractEntity implements EntityInterface
     public function toHtml()
     {
         $url = BASE_URL . 'images/' . $this->url;
-        return "<img src='$url' class='photo' alt='{$this->title}'>";
+        // escape 's
+        $title = str_replace("'", '&#39;', $this->title);
+        return "<img src='$url' class='photo' alt='$title'>";
     }
 
     /**
@@ -60,6 +65,8 @@ class Photo extends AbstractEntity implements EntityInterface
     public function toThumbnailHtml()
     {
         $url = BASE_URL . 'images/' . $this->thumbnail;
-        return "<img src='$url' class='photo-thumbnail' alt='{$this->title}'>";
+        // escape 's
+        $title = str_replace("'", '&#39;', $this->title);
+        return "<img src='$url' class='photo-thumbnail' alt='$title'>";
     }
 }

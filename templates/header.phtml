@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+    <html>
+<head>
+    <meta name="description" content='Twink Records was founded in 1969 by Dr. James Polk as the result of a recording project collaboration initiated by Polk and long time friend James R. Hurst. "Twink" was the nickname of the proprietor of the Hide-A-Way Lounge, a popular night club in East Austin during the 1960&#39;s. Twink gave Polk permission to use the name for his label.'>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <meta property="og:image" content="http://<?php echo BASE_URL; ?>web/images/logo.jpg"/>
+    <title>
+        <?php echo $pageTitle ?>
+    </title>
+    <?php $cssFile = 'http://' . BASE_URL . 'web/css/styles.css' ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo $cssFile ?>?<?php echo filemtime($cssFile) ?>" media="all" />
+</head>
+<body>
+<div class="header">
+    <div class="header-splash">
+        <h1 class="header-title">
+            Twink Records
+        </h1>
+    </div>
+    <ul class="nav-menu">
+        <?php foreach ($navLinks as $title => $url_key): ?>
+            <li class="nav-menu-item">
+                <a class="nav-menu-link" href="http://<?php echo BASE_URL . $url_key ?>/">
+                    <?php echo $title ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<div class="content">
+
+<!-- BEGIN CONTENT -->

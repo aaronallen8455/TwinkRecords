@@ -18,13 +18,12 @@ class DB
     /** @var  \mysqli $mysqli */
     protected $mysqli;
 
-    // Private methods cannot be called
     /**
      * DB constructor.
      */
     private function __construct()
     {
-        $this->mysqli = new \mysqli(HOST, USERNAME, PASSWD, DBNAME);
+        $this->mysqli = new \mysqli(DB_HOST, DB_USERNAME, DB_PASSWD, DB_DBNAME);
     }
     
     private function __clone() {}
@@ -52,24 +51,41 @@ class DB
      */
     public function query($sql)
     {
+        $sql = $this->mysqli->real_escape_string($sql);
         return $this->mysqli->query($sql);
     }
 
     /**
      * Get a page object from the title
      * 
-     * @param $title
-     * @return $this|null
+     * @param $key
+     * @return Page|null
      */
-    public function getPage($title)
+    public function getPage($key)
     {
-        if (preg_match('/^[\w\d\-_]+$/', $title)) {
-            $sql = "SELECT * FROM pages WHERE `title`=$title";
+        if (preg_match('/^[\w\d\-_]+$/', $key)) {
+            $sql = "SELECT * FROM pages WHERE `url_key`=$key";
             $result = $this->mysqli->query($sql)->fetch_assoc();
             $page = new Page();
             return $page->setData($result);
         }
         return null;
+    }
+
+    /**
+     * Get navigation links
+     * 
+     * @return array
+     */
+    public function getNavLinks()
+    {
+        $sql = 'SELECT title, url_key FROM pages ORDER BY sort_order ASC';
+        $navLinks = [];
+        $stmt = $this->query($sql);
+        while ($row = $stmt->fetch_assoc()) {
+            $navLinks[$row['title']] = $row['url_key'];
+        }
+        return $navLinks;
     }
 
     /**

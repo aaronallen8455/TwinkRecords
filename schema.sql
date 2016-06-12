@@ -14,6 +14,7 @@ CREATE TABLE `pages` (
   `title` VARCHAR(80) NULL,
   `url_key` VARCHAR(20) NOT NULL,
   `sort_order` SMALLINT UNSIGNED NOT NULL,
+  `is_active` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`page_id`),
   UNIQUE INDEX `url_key_unique` (`url_key` ASC)
 ) ENGINE = InnoDB  DEFAULT CHARSET=utf8;
@@ -32,5 +33,7 @@ CREATE TABLE `photos` (
   `url` VARCHAR(80) NOT NULL,
   `thumbnail` VARCHAR(80) NOT NULL,
   `title` VARCHAR(80) NULL,
+  `sort_order` SMALLINT UNSIGNED NOT NULL,
+  `is_active` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`photo_id`)
 ) ENGINE = InnoDB  DEFAULT CHARSET=utf8;

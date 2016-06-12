@@ -11,22 +11,10 @@ spl_autoload_register(function ($class_name) {
     include $class_name . '.php';
 });
 
-require 'includes/config.inc.php';
+$core = \Core\Core::getInstance();
 
 //get the requested page name. default to front page.
-$pageTitle = isset($_GET['page'])?$_GET['page']:'front';
+$pageKey = isset($_GET['page'])?$_GET['page']:'front';
 
-if (in_array($pageTitle, ['calendar', 'photos'])) {
-    switch ($pageTitle) {
-        case 'calendar' :
-            break;
-        case 'photos' :
-            break;
-    }
-}else{
-    //get the page from the DB
-    $db = \Core\DB\DB::getConnection();
-    if ($page = $db->getPage($pageTitle)) {
-
-    }
-}
+//render the page
+$core->loadPage($pageKey);
