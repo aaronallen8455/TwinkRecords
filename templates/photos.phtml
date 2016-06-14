@@ -1,0 +1,13 @@
+<?php $photos = \Core\DB\DB::getConnection()->getPhotos() ?>
+<?php if (!empty($photos)): ?>
+<div class="photo-gallery">
+    <?php foreach ($photos as $photo): ?>
+        <div class="photo-thumb-wrapper">
+            <img src="<?php echo $photo->getThumbnail() ?>" alt="<?php echo $photo->getTitle() ?>" />
+            <input type="hidden" value="<?php $photo->getUrl() ?>" />
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php else: ?>
+<h3>No photos at this time.</h3>
+<?php endif; ?>

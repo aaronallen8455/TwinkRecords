@@ -43,4 +43,20 @@ class Event extends AbstractEntity implements EntityInterface
             self::TITLE => $this->title
         ];
     }
+
+    /**
+     * Form the html
+     * 
+     * @return string
+     */
+    public function toHtml()
+    {
+        $html = '<h2 class="event-title">' . $this->title . '</h2>';
+        $html .= '<span class="event-date">' . date('g:ia', strtotime($this->datetime)) . ' at ' . ucwords($this->location) . '</span>';
+        $html .= '<div class="event-content-wrapper">';
+        $html .= '<p class="event-content">' . $this->content . '</p>';
+        $html .= '</div>';
+        
+        return $html;
+    }
 }

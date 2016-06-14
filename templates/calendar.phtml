@@ -1,0 +1,38 @@
+<?php
+$current = (!isset($_GET['past']));
+$db = \Core\DB\DB::getConnection();
+$dateEvents = $db->getEvents($current);
+?>
+<?php if ($current): ?>
+<a href="./past/">View past events</a>
+    <?php else: ?>
+    <a href="../">View upcoming events</a>
+<?php endif; ?>
+    <?php if (!empty($dateEvents)): ?>
+    <div class="calendar-events">
+        <ul>
+            <?php foreach ($dateEvents as $date => $events): ?>
+            <li class="date-item">
+                <h2 class="date-heading">
+                    <?php echo date('l, F jS', strtotime($date)) ?>
+                </h2>
+                <ul class="event-list">
+                    <?php foreach ($events as $event): ?>
+                    <li class="event-item">
+                        <?php echo $event->toHtml() ?>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php else: ?>
+    <div class="calendar-events">
+        <?php if ($current): ?>
+        <h2>There are no upcoming events at this time. Please check back soon!</h2>
+        <?php else: ?>
+        <h2>There are no past events.</h2>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

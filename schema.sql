@@ -15,6 +15,7 @@ CREATE TABLE `pages` (
   `url_key` VARCHAR(20) NOT NULL,
   `sort_order` SMALLINT UNSIGNED NOT NULL,
   `is_active` TINYINT NOT NULL DEFAULT 1,
+  `show_in_menu` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`page_id`),
   UNIQUE INDEX `url_key_unique` (`url_key` ASC)
 ) ENGINE = InnoDB  DEFAULT CHARSET=utf8;

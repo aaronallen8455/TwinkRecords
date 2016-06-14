@@ -5,7 +5,7 @@ RewriteBase /twink
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 #hooks
-RewriteRule ^calendar/(\d+)/?$ index.php?page=calendar&event=$1
+RewriteRule ^calendar/past/?$ index.php?page=calendar&past=1
 RewriteRule ^admin/?$ admin/index.php
 RewriteRule ^admin/([\w]+)/?$ admin/$1.php
 RewriteRule ^admin/([\w]+)/(\d)+/?$ admin/$1.php?id=$2

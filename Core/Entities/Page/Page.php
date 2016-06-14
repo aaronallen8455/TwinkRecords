@@ -22,6 +22,7 @@ class Page extends AbstractEntity implements EntityInterface
     const TABLE_NAME = 'pages';
     const SORT_ORDER = 'sort_order';
     const IS_ACTIVE = 'is_active';
+    const SHOW_IN_MENU = 'show_in_menu';
 
     protected $page_id;
     protected $content;
@@ -29,6 +30,7 @@ class Page extends AbstractEntity implements EntityInterface
     protected $url_key;
     protected $sort_order;
     protected $is_active;
+    protected $show_in_menu;
 
     /**
      * Get page html
@@ -58,7 +60,8 @@ class Page extends AbstractEntity implements EntityInterface
             self::TITLE => $this->title,
             self::URL_KEY => $this->url_key,
             self::SORT_ORDER => $this->sort_order,
-            self::IS_ACTIVE => $this->is_active
+            self::IS_ACTIVE => $this->is_active,
+            self::SHOW_IN_MENU => $this->show_in_menu
         ];
     }
 }
