@@ -125,6 +125,42 @@ body {
     padding-left: 5px;
 }
 
+/* ADMIN AREA */
+
+.admin-body {
+    background-color: #cfe0e6;
+    height: 100vh;
+}
+
+.login-form-wrapper {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 310px;
+    height: 130px;
+    background: white;
+    padding: 9px;
+    line-height: 1.6;
+    border: solid 1px;
+}
+
+.login-form-wrapper input {
+    display: block;
+    margin-left: 20px;
+}
+.login-form-wrapper input[type=submit] {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.error {
+    color: red;
+}
+
 /* FOOTER */
 
 .footer {

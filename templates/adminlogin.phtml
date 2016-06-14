@@ -1,0 +1,11 @@
+<?php global $loginError ?>
+<div class="login-form-wrapper">
+    <form action="" method="post">
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name" />
+        <label for="pass">Password: </label>
+        <input type="password" name="pass" id="pass" />
+        <input type="submit" value="Log In" />
+        <span class="error"><?php echo $loginError ?></span>
+    </form>
+</div>
