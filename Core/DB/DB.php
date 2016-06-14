@@ -42,9 +42,7 @@ class DB
         }
         return self::$instance;
     }
-    
-    // Methods
-    
+
     /**
      * Run query
      * 
@@ -53,8 +51,18 @@ class DB
      */
     public function query($sql)
     {
-        $sql = $this->mysqli->real_escape_string($sql);
         return $this->mysqli->query($sql);
+    }
+
+    /**
+     * Sanitize string
+     * 
+     * @param $str
+     * @return string
+     */
+    public function escapeString($str)
+    {
+        return $this->mysqli->real_escape_string($str);
     }
 
     /**
@@ -67,10 +75,13 @@ class DB
     {
         if (preg_match('/^[\w\d\-_]+$/', $key)) {
             $sql = "SELECT * FROM pages WHERE `url_key`='$key' AND `is_active`=1";
-            $result = $this->mysqli->query($sql)->fetch_assoc();
-            $page = new Page();
-            if (!is_null($result))
-                return $page->setData($result);
+            if ($stmt = $this->query($sql)) {
+                $result = $stmt->fetch_assoc();
+                $stmt->close();
+                $page = new Page();
+                if (!is_null($result))
+                    return $page->setData($result);
+            }
         }
         return null;
     }
@@ -84,18 +95,20 @@ class DB
     {
         $sql = 'SELECT title, url_key FROM pages WHERE is_active=1 AND show_in_menu=1 ORDER BY sort_order ASC';
         $navLinks = [];
-        $stmt = $this->query($sql);
-        while ($row = $stmt->fetch_assoc()) {
-            if ($row['url_key'] === 'front')
-                $navLinks[$row['title']] = '';
-            else
-                $navLinks[$row['title']] = $row['url_key'] . '/';
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                if ($row['url_key'] === 'front')
+                    $navLinks[$row['title']] = '';
+                else
+                    $navLinks[$row['title']] = $row['url_key'] . '/';
+            }
+            $stmt->close();
         }
         return $navLinks;
     }
 
     /**
-     * Get an array of Events indexed by datetime
+     * Get an array of current or past Events indexed by datetime
      * 
      * @param bool $current
      * @return array
@@ -104,11 +117,33 @@ class DB
     {
         $events = [];
         $sql = 'SELECT * FROM events WHERE `datetime` ' . ($current?'>=':'<') . ' NOW() ORDER BY `datetime` ' . ($current?'ASC':'DESC');
-        $stmt = $this->query($sql);
-        while ($row = $stmt->fetch_assoc()) {
-            $event = new Event();
-            $event->setData($row);
-            $events[$row['datetime']][] = $event;
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                $event = new Event();
+                $event->setData($row);
+                $events[$row['datetime']][] = $event;
+            }
+            $stmt->close();
+        }
+        return $events;
+    }
+
+    /**
+     * Get array of all events
+     *
+     * @return array
+     */
+    public function getAllEvents()
+    {
+        $events = [];
+        $sql = 'SELECT * FROM events ORDER BY datetime DESC';
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                $event = new Event();
+                $event->setData($row);
+                $events[] = $event;
+            }
+            $stmt->close();
         }
         return $events;
     }
@@ -122,13 +157,35 @@ class DB
     {
         $photos = [];
         $sql = 'SELECT * FROM photos ORDER BY sort_order ASC';
-        $stmt = $this->query($sql);
-        while ($row = $stmt->fetch_assoc()) {
-            $photo = new Photo();
-            $photo->setData($row);
-            $photos[] = $photo;
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                $photo = new Photo();
+                $photo->setData($row);
+                $photos[] = $photo;
+            }
+            $stmt->close();
         }
         return $photos;
+    }
+
+    /**
+     * Get array of all pages
+     *
+     * @return array
+     */
+    public function getPages()
+    {
+        $pages = [];
+        $sql = 'SELECT * FROM pages ORDER BY sort_order ASC';
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                $page = new Page();
+                $page->setData($row);
+                $pages[] = $page;
+            }
+            $stmt->close();
+        }
+        return $pages;
     }
 
     /**

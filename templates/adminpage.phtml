@@ -1,0 +1,125 @@
+<?php
+$db = \Core\DB\DB::getConnection();
+$pages = $db->getPages();
+$events = $db->getAllEvents();
+$photos = $db->getPhotos();
+?>
+
+<div class="admin-content">
+    <h3>Events</h3>
+    <table class="entity-table" id="events-table">
+        <tr>
+            <th>Event Title</th>
+            <th>Where</th>
+            <th>When</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($events as $event): ?>
+            <tr>
+                <td>
+                    <?php echo $event->getTitle() ?>
+                </td>
+                <td>
+                    <?php echo $event->getLocation() ?>
+                </td>
+                <td>
+                    <?php echo $event->getDatetime() ?>
+                </td>
+                <td>
+                    <form action="edit/" method="post">
+                        <input type="hidden" name="type" value="event">
+                        <input type="hidden" name="id" value="<?php echo $event->getId() ?>">
+                        <input type="submit" value="Edit">
+                    </form>
+                    <form action="delete/" method="post">
+                        <input type="hidden" name="type" value="event">
+                        <input type="hidden" name="id" value="<?php echo $event->getId() ?>">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <form action="edit/" method="post">
+        <input name="type" type="hidden" value="event">
+        <input type="submit" value="New Event">
+    </form>
+    
+    <h3>Pages</h3>
+    <table class="entity-table" id="pages-table">
+        <tr>
+            <th>Sort Order</th>
+            <th>Page Title</th>
+            <th>Enabled</th>
+            <th>In Menu</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($pages as $page): ?>
+        <tr>
+            <td>
+                <?php echo $page->getSortOrder() ?>
+            </td>
+            <td>
+                <?php echo $page->getTitle() ?>
+            </td>
+            <td>
+                <?php echo ($page->getIsActive()?'Yes':'No') ?>
+            </td>
+            <td>
+                <?php echo ($page->getShowInMenu()?'Yes':'No') ?>
+            </td>
+            <td>
+                <form action="edit/" method="post">
+                    <input type="hidden" name="type" value="page">
+                    <input type="hidden" name="id" value="<?php echo $page->getId() ?>">
+                    <input type="submit" value="Edit">
+                </form>
+                <form action="delete/" method="post">
+                    <input type="hidden" name="type" value="page">
+                    <input type="hidden" name="id" value="<?php echo $page->getId() ?>">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <form action="edit/" method="post">
+        <input name="type" type="hidden" value="page">
+        <input type="submit" value="New Page">
+    </form>
+    
+    <h3>Photos</h3>
+    <table class="entity-table" id="photos-table">
+        <tr>
+            <th>Sort Order</th>
+            <th>Photo Title</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($photos as $photo): ?>
+            <tr>
+                <td>
+                    <?php echo $photo->getSortOrder() ?>
+                </td>
+                <td>
+                    <?php echo $photo->getTitle() ?>
+                </td>
+                <td>
+                    <form action="edit/" method="post">
+                        <input type="hidden" name="type" value="photo">
+                        <input type="hidden" name="id" value="<?php echo $photo->getId() ?>">
+                        <input type="submit" value="Edit">
+                    </form>
+                    <form action="delete/" method="post">
+                        <input type="hidden" name="type" value="photo">
+                        <input type="hidden" name="id" value="<?php echo $photo->getId() ?>">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <form action="edit/" method="post">
+        <input name="type" type="hidden" value="photo">
+        <input type="submit" value="New Photo">
+    </form>
+</div> 

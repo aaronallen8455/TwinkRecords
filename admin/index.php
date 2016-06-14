@@ -1,10 +1,13 @@
 <?php
     // auto load classes
     spl_autoload_register(function ($class_name) {
+        $class_name = str_replace('\\', '/', $class_name);
         include '../' . $class_name . '.php';
     });
 
     $core = \Core\Core::getInstance();
+
+    $user = new \Core\Admin\User\User();
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,10 +24,6 @@
  * Date: 6/12/2016
  * Time: 5:17 PM
  */
-
-
-
-$user = new \Core\Admin\User\User();
 
 $loginError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pass']) && isset($_POST['name'])) {

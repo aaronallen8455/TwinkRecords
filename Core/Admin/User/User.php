@@ -21,7 +21,8 @@ class User
         //start session if none exists
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
-            $_SESSION['logged_in'] = false;
+            if (!isset($_SESSION['logged_in']))
+                $_SESSION['logged_in'] = false;
         }
     }
 
@@ -35,13 +36,18 @@ class User
     public function logIn($name, $password)
     {
         $db = DB::getConnection();
-        if ($stmt = $db->query("SELECT pass FROM users WHERE `name`='$name'")) {
+        $name = $db->escapeString($name);
+        $sql = "SELECT pass FROM users WHERE `name`='$name'";
+        if ($stmt = $db->query($sql)) {
             $hash = $stmt->fetch_row();
-            if (password_verify($password, $hash[0])) {
+            $hash = $hash[0];
+            //if (password_verify($password, $hash)) {
+            if (sha1($password) === $hash) { // GoProHosting sucks
                 //user logged in
                 $_SESSION['logged_in'] = true;
                 return true;
             }
+            $stmt->close();
         }
         return false;
     }
