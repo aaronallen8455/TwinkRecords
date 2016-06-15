@@ -4,7 +4,7 @@
     <?php foreach ($photos as $photo): ?>
         <div class="photo-thumb-wrapper">
             <?php echo $photo->toThumbnailHtml() ?>
-            <input type="hidden" value="<?php $photo->getImage() ?>" />
+            <input type="hidden" value="<?php echo $photo->getImage() ?>" />
         </div>
     <?php endforeach; ?>
 </div>

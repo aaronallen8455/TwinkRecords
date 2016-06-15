@@ -35,11 +35,12 @@ class Form
      *
      * @param string $name
      * @param string $label
+     * @param string $default
      * @return string
      */
-    public function textInput($name, $label)
+    public function textInput($name, $label, $default = '')
     {
-        $value = '';
+        $value = $default;
         if (!is_null($this->entity)) {
             $value = $this->entity->getProperty($name);
         }
@@ -131,28 +132,38 @@ class Form
 
     public function dateTimeInput($name, $label)
     {
+        //get existing values
+        if ($this->entity && !empty($this->entity->getProperty($name))) {
+            $dateValue = \DateTime::createFromFormat('Y-m-d H:i:s', $this->entity->getProperty($name));
+            $monthValue = $dateValue->format('n');
+            $yearValue = $dateValue->format('Y');
+            $dayValue = $dateValue->format('j');
+            $time = $dateValue->format('g:ia');
+        }else $monthValue = $yearValue = $dayValue = $time = '';
+
         $html = '';
         $html .= '<div class="form-input' . (($this->errors && $this->errors[$name])?' form-error':'') . '">';
         $html .= "<label for='$name'>$label</label>";
         $html .= "<span>";
-        $html .= "<select name='month'>";
-        for ($i=0; $i<12; $i++) {
+        $html .= "<select name='month' data-value='$monthValue'>";
+        $date = new \DateTime();
+        for ($i=1; $i<=12; $i++) {
             //print each month
-            $date = new \DateTime();
-            $date->add(new \DateInterval('P'.$i.'M'));
-            $monthNum = $date->format('m');
+            $date->setDate(null,$i,1);
+            $monthNum = $date->format('n');
             $monthName = $date->format('F');
-            $html .= "<option value='$monthNum'>$monthName</option>";
+            $html .= "<option value='$monthNum'" . (($monthValue == $monthNum)?' selected':'') . ">$monthName</option>";
         }
         $html .= "</select>";
-        $html .= "<select name='day'></select>"; //make options in JS
+        $html .= "<select name='day' data-value='$dayValue'></select>"; //make options in JS
         $html .= "<select name='year'>";
         for ($i=0; $i<5; $i++) {
             $year = (int)date('Y') + $i;
-            $html .= "<option value='$year'>$year</option>";
+            $html .= "<option value='$year'" . (($yearValue == $year)?' selected':'') . ">$year</option>";
         }
         $html .= '</select>';
-        $html .= 'Time: <input type="text" name="time" placeholder="ex. 9:30pm"/>';
+
+        $html .= 'Time: <input type="text" name="time" placeholder="ex. 9:30pm" value="'. $time .'"/>';
 
         return $html;
     }

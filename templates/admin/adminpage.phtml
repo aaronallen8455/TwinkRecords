@@ -16,7 +16,7 @@ $photos = $db->getAllPhotos();
         <input name="type" type="hidden" value="event">
         <input type="submit" value="New Event">
     </form>
-    <table class="entity-table" id="events-table">
+    <table class="entity-table" id="events-table" border="1">
         <tr>
             <th>Event Title</th>
             <th>Where</th>
@@ -32,7 +32,7 @@ $photos = $db->getAllPhotos();
                     <?php echo $event->getLocation() ?>
                 </td>
                 <td>
-                    <?php echo $event->getDatetime() ?>
+                    <?php echo date('n/j/Y', strtotime($event->getDatetime())) ?>
                 </td>
                 <td>
                     <form action="" method="post">
@@ -60,7 +60,7 @@ $photos = $db->getAllPhotos();
         <input name="type" type="hidden" value="page">
         <input type="submit" value="New Page">
     </form>
-    <table class="entity-table" id="pages-table">
+    <table class="entity-table" id="pages-table" border="1">
         <tr>
             <th>Sort Order</th>
             <th>Page Title</th>
@@ -108,7 +108,7 @@ $photos = $db->getAllPhotos();
         <input name="type" type="hidden" value="photo">
         <input type="submit" value="New Photo">
     </form>
-    <table class="entity-table" id="photos-table">
+    <table class="entity-table" id="photos-table" border="1">
         <tr>
             <th>Sort Order</th>
             <th>Photo Title</th>

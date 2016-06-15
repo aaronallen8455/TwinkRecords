@@ -57,7 +57,7 @@ class Photo extends AbstractEntity implements EntityInterface
         $image = 'http://' . BASE_URL . 'web/images/photos/' . $this->image;
         // escape 's
         $title = str_replace("'", '&#39;', $this->title);
-        return "<img src='$image' class='photo' alt='$title'>";
+        return "<img src='$image' class='photo' alt='$title' title='$title'>";
     }
 
     /**
@@ -70,7 +70,7 @@ class Photo extends AbstractEntity implements EntityInterface
         $image = 'http://' . BASE_URL . 'web/images/photos/' . $this->thumbnail;
         // escape 's
         $title = str_replace("'", '&#39;', $this->title);
-        return "<img src='$image' class='photo-thumbnail' alt='$title'>";
+        return "<img src='$image' class='photo-thumbnail' alt='$title' title='$title'>";
     }
 
     /**

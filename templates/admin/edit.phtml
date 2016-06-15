@@ -39,13 +39,13 @@ switch ($type) {
         echo $form->textArea('content', 'Page Content');
         echo $form->yesNoInput('is_active', 'Enabled');
         echo $form->yesNoInput('show_in_menu', 'Create Menu Link');
-        echo $form->textInput('sort_order', 'Sort Order');
+        echo $form->textInput('sort_order', 'Sort Order', '1');
         break;
     case 'photo':
         echo $form->textInput('title', 'Image title');
         echo $form->imageInput('image', 'Select Image File');
         echo $form->yesNoInput('is_active', 'Enabled');
-        echo $form->textInput('sort_order', 'Sort Order');
+        echo $form->textInput('sort_order', 'Sort Order', '1');
         break;
 }
 ?>
@@ -60,3 +60,5 @@ switch ($type) {
         <input type="submit" value="Back" />
     </form>
 </div>
+<?php $jsFile = 'http://' . BASE_URL . 'web/js/edit.js' ?>
+<script type="application/javascript" src="<?php echo $jsFile ?>"></script>
