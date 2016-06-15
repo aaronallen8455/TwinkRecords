@@ -3,8 +3,8 @@
 <div class="photo-gallery">
     <?php foreach ($photos as $photo): ?>
         <div class="photo-thumb-wrapper">
-            <img src="<?php echo $photo->getThumbnail() ?>" alt="<?php echo $photo->getTitle() ?>" />
-            <input type="hidden" value="<?php $photo->getUrl() ?>" />
+            <?php echo $photo->toThumbnailHtml() ?>
+            <input type="hidden" value="<?php $photo->getImage() ?>" />
         </div>
     <?php endforeach; ?>
 </div>

@@ -37,14 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pass']) && isset($_PO
 //display admin interface or login form
 if ($user->isLoggedIn()) {
     //route actions
-    if (isset($_GET['action'])) {
-
+    if (isset($_POST['action'])) {
         // get entity type
         if (isset($_POST['type'])) {
             $type = $_POST['type'];
 
             // loading existing entity?
-            if (isset($_POST['id'])) {
+            if (isset($_POST['id']) || $_POST['action'] === 'save') {
                 switch ($type) {
                     case 'event':
                         $entity = new \Core\Entities\Event\Event();
@@ -59,12 +58,13 @@ if ($user->isLoggedIn()) {
                         exit('Invalid type specified.');
                 }
                 
-                if ($_GET['action'] !== 'save')
+                if ($_POST['action'] !== 'save')
                     $entity->load($_POST['id']);
             }
         }else exit('No type specified.');
         
-        switch ($_GET['action']) {
+        // action routing
+        switch ($_POST['action']) {
             case 'edit':
                 $core->loadTemplate('admin/edit');
                 break;
@@ -93,6 +93,8 @@ if ($user->isLoggedIn()) {
                     $errors = [];
                     $data = $entity->prepareData($_POST, $errors);
                     if (!in_array(true, $errors)) {
+                        if (isset($_POST['id']))
+                            $entity->load($_POST['id']);
                         $entity->setData($data);
                         if ($entity->save()) {
                             \Core\Helper\Message::success("You saved the $type.");
@@ -101,6 +103,12 @@ if ($user->isLoggedIn()) {
                             \Core\Helper\Message::error("An error occurred while attempting to save the $type.");
                             $core->loadTemplate('admin/adminpage');
                         }
+                    }else{
+                        // correct errors
+                        if (isset($_POST['id']))
+                            $entity->load($_POST['id']);
+                        $entity->setData($data);
+                        $core->loadTemplate('admin/edit');
                     }
                 }else{
                     \Core\Helper\Message::error('Specified entity does not exist.');

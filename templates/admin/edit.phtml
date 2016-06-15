@@ -2,25 +2,61 @@
 $user = new \Core\Admin\User\User();
 if (!$user->isLoggedIn()) exit('You are not logged in.');
 
-// get entity type
-if (isset($_POST['type'])) {
-    $type = $_POST['type'];
-    switch ($type) {
-        case 'event':
-            $entity = new \Core\Entities\Event\Event();
-            break;
-        case 'page':
-            $entity = new \Core\Entities\Page\Page();
-            break;
-        case 'photo':
-            $entity = new \Core\Entities\Photo\Photo();
-            break;
-        case 'default':
-            exit('Invalid type specified.');
-    }
-}else exit('No type specified.');
+// we have to import these variables
+global $entity;
+global $errors;
 
-// creating new or editing?
-if (isset($_POST['id'])) {
-    $entity->load($_POST['id']);
+$isNew = (!$entity || !$entity->getId());
+?>
+<h2 class="page-title">
+    <?php
+    if ($isNew) {
+        echo 'Create New ' . ucwords($_POST['type']);
+    }else{
+        echo 'Edit ' . ucwords($_POST['type']);
+    }
+    ?>
+</h2>
+<div class="admin-form-wrapper">
+    <form action="" method="post" enctype="multipart/form-data">
+<?php
+
+if (!isset($errors)) $errors = [];
+
+$form = new \Core\Helper\Form($entity, $errors);
+// get entity type
+$type = $_POST['type'];
+switch ($type) {
+    case 'event':
+        echo $form->textInput('title', 'Event Name');
+        echo $form->dateTimeInput('datetime', 'Date and Time');
+        echo $form->textInput('location', 'Location');
+        echo $form->textArea('content', 'Description');
+        break;
+    case 'page':
+        echo $form->textInput('title', 'Page Title');
+        echo $form->textInput('url_key', 'URL Key');
+        echo $form->textArea('content', 'Page Content');
+        echo $form->yesNoInput('is_active', 'Enabled');
+        echo $form->yesNoInput('show_in_menu', 'Create Menu Link');
+        echo $form->textInput('sort_order', 'Sort Order');
+        break;
+    case 'photo':
+        echo $form->textInput('title', 'Image title');
+        echo $form->imageInput('image', 'Select Image File');
+        echo $form->yesNoInput('is_active', 'Enabled');
+        echo $form->textInput('sort_order', 'Sort Order');
+        break;
 }
+?>
+        <?php if (isset($_POST['id'])): ?>
+        <input type="hidden" name="id" value="<?php echo $_POST['id'] ?>"/>
+        <?php endif; ?>
+        <input type="hidden" name="type" value="<?php echo $_POST['type']?>">
+        <input type="hidden" name="action" value="save"/>
+        <input type="submit" value="Save" />
+    </form>
+    <form action="" method="post">
+        <input type="submit" value="Back" />
+    </form>
+</div>

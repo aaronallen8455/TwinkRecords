@@ -21,12 +21,14 @@ class Photo extends AbstractEntity implements EntityInterface
     const THUMBNAIL = 'thumbnail';
     const TITLE = 'title';
     const SORT_ORDER = 'sort_order';
+    const IS_ACTIVE = 'is_active';
     
     protected $photo_id;
     protected $image;
     protected $thumbnail;
     protected $title;
     protected $sort_order;
+    protected $is_active;
 
     /**
      * Get data
@@ -40,7 +42,8 @@ class Photo extends AbstractEntity implements EntityInterface
             self::IMAGE => $this->image,
             self::THUMBNAIL => $this->thumbnail,
             self::TITLE => $this->title,
-            self::SORT_ORDER => $this->sort_order
+            self::SORT_ORDER => $this->sort_order,
+            self::IS_ACTIVE => $this->is_active
         ];
     }
 
@@ -51,7 +54,7 @@ class Photo extends AbstractEntity implements EntityInterface
      */
     public function toHtml()
     {
-        $image = $this->image;
+        $image = 'http://' . BASE_URL . 'web/images/photos/' . $this->image;
         // escape 's
         $title = str_replace("'", '&#39;', $this->title);
         return "<img src='$image' class='photo' alt='$title'>";
@@ -64,10 +67,23 @@ class Photo extends AbstractEntity implements EntityInterface
      */
     public function toThumbnailHtml()
     {
-        $image = $this->thumbnail;
+        $image = 'http://' . BASE_URL . 'web/images/photos/' . $this->thumbnail;
         // escape 's
         $title = str_replace("'", '&#39;', $this->title);
         return "<img src='$image' class='photo-thumbnail' alt='$title'>";
+    }
+
+    /**
+     * Delete image files
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+        unlink('http://' . BASE_URL . 'web/images/photos/' . $this->image);
+        unlink('http://' . BASE_URL . 'web/images/photos/' . $this->thumbnail);
+
+        return parent::delete();
     }
 
     /**
@@ -81,7 +97,9 @@ class Photo extends AbstractEntity implements EntityInterface
     {
         $errors = $this->checkDataCompletion($data, $errors);
         $errors['thumbnail'] = false;
-        $errors['image'] = !isset($_FILES['image']);
+        if (!$this->image) {
+            $errors['image'] = !isset($_FILES['image']);
+        }
 
         //validate image and get thumbnail
         if (!in_array(true, $errors)) {
@@ -89,6 +107,7 @@ class Photo extends AbstractEntity implements EntityInterface
             if (is_uploaded_file($_FILES['image']['tmp_name']) && ($_FILES['image']['error'] === UPLOAD_ERR_OK)) {
                 if (!empty($_FILES['image']['name']) && isset($_SESSION['image'])) {
                     unlink($_SESSION['image']);
+                    unlink($_SESSION['thumbnail']);
                 }
 
                 $file = $_FILES['image'];
@@ -110,6 +129,7 @@ class Photo extends AbstractEntity implements EntityInterface
                         unlink($file['tmp_name']);
                     }
                 }
+
                 //if no errors, we process the image
                 if (empty($errors['image'])) {
                     //if file dimensions are too large, resize them.
@@ -159,15 +179,18 @@ class Photo extends AbstractEntity implements EntityInterface
                     $thumbnail = imagecreatetruecolor($thumbWidth, $thumbHeight);
                     imagecopyresampled($thumbnail, $src, 0,0,0,0, $thumbWidth, $thumbHeight, $width, $height);
                     //create path
-                    $imagePath = 'http://' . BASE_URL . 'web/images/photos/' . sha1($file['name'] . uniqid('', true)) . '.jpg';
-                    $thumbnailPath = 'http://' . BASE_URL . 'web/images/photos/' . sha1($file['name'] . uniqid('', true)) . '.jpg';
+                    $imageName = sha1($file['name'] . uniqid('', true)) . '.jpg';
+                    $thumbnailName = sha1($file['name'] . uniqid('', true)) . '.jpg';
+                    $imagePath = '../web/images/photos/' . $imageName;
+                    $thumbnailPath = '../web/images/photos/' . $thumbnailName;
                     imagejpeg($resized, $imagePath);
                     imagejpeg($thumbnail, $thumbnailPath);
                     unlink($file['tmp_name']);
-                    $_SESSION['image'] = $imagePath;
-                    $_SESSION['thumbnail'] = $thumbnailPath;
+                    $_SESSION['image'] = $imageName;
+                    $_SESSION['thumbnail'] = $thumbnailName;
                 }
-            }else if (!isset($_SESSION['image'])){
+            }else if (!isset($_SESSION['image']) && !isset($_POST['id'])){
+                //image selector was left blank for new image
                 $errors['image'] = true;
             }
             if (isset($_SESSION['image']) && !in_array(true, $errors)) {
@@ -177,6 +200,7 @@ class Photo extends AbstractEntity implements EntityInterface
                 unset($_SESSION['thumbnail']);
             }
         }
+
         return parent::prepareData($data, $errors);
     }
 }

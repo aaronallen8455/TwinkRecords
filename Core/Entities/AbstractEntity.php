@@ -54,8 +54,10 @@ abstract class AbstractEntity
     {
         $props = get_object_vars($this);
         foreach ($data as $item=>$value) {
-            if (in_array($item, $props)) {
-                $this->$item = $value;
+            if (!empty($value)) {
+                if (array_key_exists($item, $props)) {
+                    $this->$item = $value;
+                }
             }
         }
         return $this;
@@ -104,9 +106,11 @@ abstract class AbstractEntity
         if (isset($data[$this::ID])) {
             $sql = "UPDATE " . $this::TABLE_NAME . " SET ";
             foreach ($data as $item => $value) {
-                if ($item === $this->getId()) continue;
-                $sql .= '`$item`' . "='$value' ";
+                if ($item === $this::ID) continue;
+                $value = $db->escapeString($value);
+                $sql .= "`$item`='$value', ";
             }
+            $sql = substr($sql, 0, -2) . ' ';
             $sql .= "WHERE `" . $this::ID . "`={$this->getId()}";
         }else{
             //get rid of empty ID field
@@ -117,6 +121,7 @@ abstract class AbstractEntity
             }
             $sql = substr($sql, 0, -2) . ") VALUES (";
             foreach ($data as $value) {
+                $value = $db->escapeString($value);
                 $sql .= "'$value'" . ', ';
             }
             $sql = substr($sql, 0, -2) . ")";
@@ -147,6 +152,8 @@ abstract class AbstractEntity
      */
     public function prepareData(array $data, array &$errors)
     {
+        if (isset($data['id'])) // set the correct ID property on data array
+            $data[$this::ID] = $data['id'];
         return $data;
     }
 
@@ -159,11 +166,25 @@ abstract class AbstractEntity
      */
     protected function checkDataCompletion(array $data, array $errors)
     {
-        foreach (get_class_vars($this) as $prop) {
-            $errors[$prop] = !isset($data[$prop]);
+        foreach (array_keys(get_object_vars($this)) as $prop) {
+            $errors[$prop] = empty($data[$prop]);
         }
         $errors[$this::ID] = false; // assigned on creation
-        
+
         return $errors;
+    }
+
+    /**
+     * Get a property value
+     * 
+     * @param $prop
+     * @return mixed
+     */
+    public function getProperty($prop)
+    {
+        if (array_key_exists($prop, get_object_vars($this))) {
+            return $this->$prop;
+        }
+        return false;
     }
 }

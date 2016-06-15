@@ -1,0 +1,17 @@
+<?php global $entity ?>
+<h2 class="page-title">
+    Delete <?php echo $_POST['type'] ?>
+</h2>
+<span>
+    Are you sure you want to delete the <?php echo $_POST['type'] ?> '<?php echo $entity->getTitle()?>'
+</span>
+<form action="" method="post">
+    <input type="hidden" name="id" value="<?php echo $_POST['id']?>">
+    <input type="hidden" name="type" value="<?php echo $_POST['type']?>">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="confirm" value="1">
+    <input type="submit" value="Delete">
+</form>
+<form action="" method="post">
+    <input type="submit" value="Back" />
+</form>

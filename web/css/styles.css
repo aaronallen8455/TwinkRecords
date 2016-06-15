@@ -132,6 +132,18 @@ body {
     height: 100vh;
 }
 
+.admin-content {
+    background-color: white;
+    padding: 20px;
+}
+
+.admin-section {
+    display: inline-block;
+    margin: 5px;
+    border: solid 1px black;
+    padding: 10px;
+}
+
 .login-form-wrapper {
     position: absolute;
     margin: auto;
@@ -159,6 +171,21 @@ body {
 
 .error {
     color: red;
+}
+
+.form-error {
+    border: solid 1px red;
+}
+
+.message-success {
+    color: green;
+    background-color: #ace6ac;
+    border: solid 1px green;
+}
+.message-error {
+    color: red;
+    background-color: #ffbfbf;
+    border: solid 1px red;
 }
 
 /* FOOTER */

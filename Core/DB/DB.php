@@ -141,6 +141,7 @@ class DB
             while ($row = $stmt->fetch_assoc()) {
                 $event = new Event();
                 $event->setData($row);
+                
                 $events[] = $event;
             }
             $stmt->close();
@@ -154,6 +155,26 @@ class DB
      * @return array
      */
     public function getPhotos()
+    {
+        $photos = [];
+        $sql = 'SELECT * FROM photos WHERE is_active=1 ORDER BY sort_order ASC';
+        if ($stmt = $this->query($sql)) {
+            while ($row = $stmt->fetch_assoc()) {
+                $photo = new Photo();
+                $photo->setData($row);
+                $photos[] = $photo;
+            }
+            $stmt->close();
+        }
+        return $photos;
+    }
+
+    /**
+     * Get all photos
+     * 
+     * @return array
+     */
+    public function getAllPhotos()
     {
         $photos = [];
         $sql = 'SELECT * FROM photos ORDER BY sort_order ASC';
