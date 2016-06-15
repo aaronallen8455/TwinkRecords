@@ -59,4 +59,22 @@ class Event extends AbstractEntity implements EntityInterface
         
         return $html;
     }
+
+    /**
+     * Prepare input data
+     *
+     * @param array $data
+     * @param array $errors
+     * @return array
+     */
+    public function prepareData(array $data, array &$errors)
+    {
+        $errors = $this->checkDataCompletion($data, $errors);
+        
+        if (empty($errors)) {
+            $data['title'] = trim($data['title']);
+            $data['location'] = trim($data['location']);
+        }
+        return parent::prepareData($data, $errors);
+    }
 }

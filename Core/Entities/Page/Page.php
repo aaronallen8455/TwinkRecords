@@ -64,4 +64,24 @@ class Page extends AbstractEntity implements EntityInterface
             self::SHOW_IN_MENU => $this->show_in_menu
         ];
     }
+
+    /**
+     * Prepare data and errors
+     *
+     * @param array $data
+     * @param array $errors
+     * @return array
+     */
+    public function prepareData(array $data, array &$errors)
+    {
+        $errors = $this->checkDataCompletion($data, $errors);
+        
+        if (empty($errors)) {
+            $data['title'] = trim($data['title']);
+            $data['url_key'] = str_replace(' ', '-', $data['url_key']);
+            $data['url_key'] = preg_replace('/[^\w\d\-]/', '', $data['url_key']);
+        }
+        
+        return parent::prepareData($data, $errors);
+    }
 }

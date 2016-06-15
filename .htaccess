@@ -7,7 +7,6 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 #hooks
 RewriteRule ^calendar/past/?$ index.php?page=calendar&past=1
 RewriteRule ^admin/?$ admin/index.php
-RewriteRule ^admin/([\w]+)/?$ admin/$1.php
-RewriteRule ^admin/([\w]+)/(\d)+/?$ admin/$1.php?id=$2
+RewriteRule ^admin/([\w]+)/?$ admin/index.php?action=$1
 RewriteRule ^/?$ index.php?page=front
 RewriteRule ^([\w\d_\-]+)/?$ index.php?page=$1

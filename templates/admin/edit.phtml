@@ -1,0 +1,26 @@
+<?php
+$user = new \Core\Admin\User\User();
+if (!$user->isLoggedIn()) exit('You are not logged in.');
+
+// get entity type
+if (isset($_POST['type'])) {
+    $type = $_POST['type'];
+    switch ($type) {
+        case 'event':
+            $entity = new \Core\Entities\Event\Event();
+            break;
+        case 'page':
+            $entity = new \Core\Entities\Page\Page();
+            break;
+        case 'photo':
+            $entity = new \Core\Entities\Photo\Photo();
+            break;
+        case 'default':
+            exit('Invalid type specified.');
+    }
+}else exit('No type specified.');
+
+// creating new or editing?
+if (isset($_POST['id'])) {
+    $entity->load($_POST['id']);
+}

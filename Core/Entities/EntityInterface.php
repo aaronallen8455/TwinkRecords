@@ -18,4 +18,6 @@ interface EntityInterface
     public function save();
     
     public function delete();
+    
+    public function load();
 }

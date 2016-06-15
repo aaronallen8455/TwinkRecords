@@ -31,7 +31,7 @@ CREATE TABLE `events` (
 
 CREATE TABLE `photos` (
   `photo_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(80) NOT NULL,
+  `image` VARCHAR(80) NOT NULL,
   `thumbnail` VARCHAR(80) NOT NULL,
   `title` VARCHAR(80) NULL,
   `sort_order` SMALLINT UNSIGNED NOT NULL,

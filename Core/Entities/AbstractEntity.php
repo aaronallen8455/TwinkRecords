@@ -15,10 +15,6 @@ abstract class AbstractEntity
 {
     const ID = null;
     const TABLE_NAME = null;
-
-    public function __construct()
-    {
-    }
     
     /**
      * Magic getter and setter methods
@@ -51,13 +47,16 @@ abstract class AbstractEntity
     /**
      * Set model fields
      *
-     * @param array $array
+     * @param array $data
      * @return $this
      */
-    public function setData(array $array)
+    public function setData(array $data)
     {
-        foreach ($array as $item=>$value) {
-            $this->$item = $value;
+        $props = get_object_vars($this);
+        foreach ($data as $item=>$value) {
+            if (in_array($item, $props)) {
+                $this->$item = $value;
+            }
         }
         return $this;
     }
@@ -67,10 +66,7 @@ abstract class AbstractEntity
      *
      * @return array
      */
-    public function getData()
-    {
-        return [];
-    }
+    abstract public function getData();
 
     /**
      * Get the id value
@@ -140,5 +136,34 @@ abstract class AbstractEntity
         $stmt = $db->query("SELECT * FROM " . $this::TABLE_NAME . " WHERE `" . $this::ID . "`=$id");
         $data = $stmt->fetch_assoc();
         return $this->setData($data);
+    }
+
+    /**
+     * Parse input data
+     *
+     * @param array $data
+     * @param array $errors
+     * @return array
+     */
+    public function prepareData(array $data, array &$errors)
+    {
+        return $data;
+    }
+
+    /**
+     * Get incomplete fields errors
+     * 
+     * @param array $data
+     * @param array $errors
+     * @return array
+     */
+    protected function checkDataCompletion(array $data, array $errors)
+    {
+        foreach (get_class_vars($this) as $prop) {
+            $errors[$prop] = !isset($data[$prop]);
+        }
+        $errors[$this::ID] = false; // assigned on creation
+        
+        return $errors;
     }
 }
