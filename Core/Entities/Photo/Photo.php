@@ -68,9 +68,10 @@ class Photo extends AbstractEntity implements EntityInterface
     public function toThumbnailHtml()
     {
         $image = 'http://' . BASE_URL . 'web/images/photos/' . $this->thumbnail;
+        $fullImage = 'http://' . BASE_URL . 'web/images/photos/' . $this->image;
         // escape 's
         $title = str_replace("'", '&#39;', $this->title);
-        return "<img src='$image' class='photo-thumbnail' alt='$title' title='$title'>";
+        return "<img src='$image' class='photo-thumbnail' alt='$title' title='$title' data-url='$fullImage'>";
     }
 
     /**
@@ -80,8 +81,8 @@ class Photo extends AbstractEntity implements EntityInterface
      */
     public function delete()
     {
-        unlink('http://' . BASE_URL . 'web/images/photos/' . $this->image);
-        unlink('http://' . BASE_URL . 'web/images/photos/' . $this->thumbnail);
+        unlink('../web/images/photos/' . $this->image);
+        unlink('../web/images/photos/' . $this->thumbnail);
 
         return parent::delete();
     }
@@ -136,8 +137,8 @@ class Photo extends AbstractEntity implements EntityInterface
                     $maxHeight = 900;
                     $maxWidth = 1600;
 
-                    $thumbMaxHeight = 90;
-                    $thumbMaxWidth = 160;
+                    $thumbMaxHeight = 108;
+                    $thumbMaxWidth = 192;
 
                     //user proper image create function for each file type
                     switch ($file_ext) {

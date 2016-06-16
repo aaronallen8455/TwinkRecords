@@ -164,6 +164,7 @@ class Form
         $html .= '</select>';
 
         $html .= 'Time: <input type="text" name="time" placeholder="ex. 9:30pm" value="'. $time .'"/>';
+        $html .= '</div>';
 
         return $html;
     }

@@ -125,6 +125,24 @@ body {
     padding-left: 5px;
 }
 
+.photo-thumb-wrapper {
+    display: inline-block;
+}
+.photo-thumb-wrapper img {
+    /*border: solid #414141 5px;
+    border-radius: 3px;*/
+    margin: 5px;
+}
+
+.image-viewport {
+    position: fixed;
+}
+
+.photo-gallery {
+    background-color: #2a2a2a;
+    padding: 5px;
+}
+
 /* ADMIN AREA */
 
 .admin-body {
@@ -140,8 +158,13 @@ body {
 .admin-section {
     display: inline-block;
     margin: 5px;
-    border: solid 1px black;
+    border: solid 2px black;
     padding: 10px;
+    border-radius: 2%;
+}
+
+.admin-form-wrapper input[type="submit"] {
+    margin: 10px;
 }
 
 .login-form-wrapper {
@@ -157,6 +180,20 @@ body {
     padding: 9px;
     line-height: 1.6;
     border: solid 1px;
+}
+
+.form-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    background-color: #f1f8ff;
+    margin-top: 2px;
+}
+.form-input:nth-of-type(even) {
+    background-color: #e0f3ff;
+}
+.form-input label, input, select {
+    margin-right: 10px;
 }
 
 .login-form-wrapper input {
@@ -177,21 +214,39 @@ body {
     border: solid 1px red;
 }
 
-.message-success {
+.message-error, .message-success {
+    text-align: center;
+    margin: 5px;
+}
+.message-success > span {
     color: green;
     background-color: #ace6ac;
     border: solid 1px green;
+    padding: 5px;
 }
-.message-error {
+.message-error > span {
     color: red;
     background-color: #ffbfbf;
     border: solid 1px red;
+    padding: 5px;
 }
 
 .entity-table {
     border-collapse: collapse;
+    margin-top: 10px;
 }
-
+.entity-table td {
+    padding: 5px;
+}
+.entity-table tr {
+    background-color: #f1f8ff;
+}
+.entity-table tr:nth-child(even) {
+    background-color: #e0f3ff;
+}
+.entity-table form {
+    display: inline;
+}
 /* FOOTER */
 
 .footer {

@@ -62,3 +62,17 @@ switch ($type) {
 </div>
 <?php $jsFile = 'http://' . BASE_URL . 'web/js/edit.js' ?>
 <script type="application/javascript" src="<?php echo $jsFile ?>"></script>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        width : 800,
+        height : 400,
+        browser_spellcheck : true,
+
+        plugins: "textcolor,paste,searchreplace,fullscreen,hr,link,anchor,image,charmap,media,autoresize,autosave,contextmenu,wordcount",
+
+        toolbar1: "cut,copy,paste,|,undo,redo,removeformat,|hr,|,link,unlink,anchor,image,|,charmap,media,|,search,replace,|,fullscreen",
+        toolbar2:	"bold,italic,underline,strikethrough,forecolor,backcolor,|,alignleft,aligncenter,alignright,alignjustify,|,formatselect,|,bullist,numlist,|,outdent,indent,blockquote,"
+    });
+</script>

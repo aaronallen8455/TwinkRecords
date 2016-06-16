@@ -14,7 +14,7 @@ $dateEvents = $db->getEvents($current);
             <?php foreach ($dateEvents as $date => $events): ?>
             <li class="date-item">
                 <h2 class="date-heading">
-                    <?php echo date('l, F jS', strtotime($date)) ?>
+                    <?php echo date('l, F jS Y', strtotime($date)) ?>
                 </h2>
                 <ul class="event-list">
                     <?php foreach ($events as $event): ?>

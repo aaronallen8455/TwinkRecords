@@ -40,6 +40,7 @@ var setDayOptions = (function () {
             'th'
         ];
         if (num === 12) return 'th';
+        if (num === 11) return 'th';
         return dateSuffix[num.toString().slice(-1)];
     }
     return function (yearSelector, monthSelector, daySelector) {

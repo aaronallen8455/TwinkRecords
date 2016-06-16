@@ -3,7 +3,7 @@
     Delete <?php echo $_POST['type'] ?>
 </h2>
 <span>
-    Are you sure you want to delete the <?php echo $_POST['type'] ?> '<?php echo $entity->getTitle()?>'
+    Are you sure you want to delete the <?php echo $_POST['type'] ?> '<?php echo $entity->getTitle()?>?' This action cannot be undone.
 </span>
 <form action="" method="post">
     <input type="hidden" name="id" value="<?php echo $_POST['id']?>">
