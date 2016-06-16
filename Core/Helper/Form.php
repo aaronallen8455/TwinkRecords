@@ -130,6 +130,13 @@ class Form
         return $html;
     }
 
+    /**
+     * Create datetime input
+     * 
+     * @param $name
+     * @param $label
+     * @return string
+     */
     public function dateTimeInput($name, $label)
     {
         //get existing values

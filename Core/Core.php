@@ -15,8 +15,6 @@ class Core
 {
     static private $instance;
 
-    protected $local;
-
     private function __construct()
     {
         // is local environment?
@@ -134,26 +132,24 @@ class Core
     {
         $db = DB::getConnection();
 
-        // pages with special content handled here
-        if (in_array($pageKey, ['calendar', 'photos'])) {
-            $page = $db->getPage($pageKey);
+        if ($page = $db->getPage($pageKey)) {
             $this->header($page->getTitle());
-            echo $page->toHtml();
-            $this->loadTemplate($pageKey);
-        }else{
-            // Basic content page: get the page from DB
-            if ($page = $db->getPage($pageKey)) {
-                $this->header($page->getTitle());
+            // pages with special content handled here
+            if (in_array($pageKey, ['calendar', 'photos'])) {
+                echo $page->toHtml();
+                $this->loadTemplate($pageKey);
+            }else{
+                // Basic content page: get the page from DB
                 // don't display content title on front page
                 echo $page->toHtml($pageKey !== 'front');
-            }else{
-                // 404 error
-                $page = $db->getPage('404');
-                $this->header($page->getTitle());
-                echo $page->toHtml();
             }
+        }else{
+            // 404 error
+            $page = $db->getPage('404');
+            $this->header($page->getTitle());
+            echo $page->toHtml();
         }
-        
+
         $this->footer();
     }
 
@@ -166,15 +162,5 @@ class Core
     {
         if (file_exists(BASE_URI . "/templates/$name.phtml")) {}
             include BASE_URI . "/templates/$name.phtml";
-    }
-
-    /**
-     * Is local
-     * 
-     * @return bool
-     */
-    public function isLocal()
-    {
-        return $this->local;
     }
 }

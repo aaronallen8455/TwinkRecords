@@ -20,7 +20,7 @@ function checkContentHeight(content) {
         closeHiderLink.style.bottom = 0;
         closeHiderLink.style.right = '50%';
         closeHiderLink.title = 'Show Full Content';
-        closeHiderLink.onclick = closeHider.bind(null, hider, content);
+        content.onclick = closeHider.bind(null, hider, content);
         hider.appendChild(closeHiderLink);
     }
 }
