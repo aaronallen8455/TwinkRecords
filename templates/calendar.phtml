@@ -36,3 +36,6 @@ $dateEvents = $db->getEvents($current);
         <?php endif; ?>
     </div>
 <?php endif; ?>
+
+<?php $path = 'http://' . BASE_URL . 'web/js/' ?>
+<script type="application/javascript" src="<?php echo $path ?>events.js"></script>

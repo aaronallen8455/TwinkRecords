@@ -98,17 +98,25 @@ class Photo extends AbstractEntity implements EntityInterface
     {
         $errors = $this->checkDataCompletion($data, $errors);
         $errors['thumbnail'] = false;
+        //check if image field is blank
         if (!$this->image) {
             $errors['image'] = !isset($_FILES['image']);
+        }else{
+            //image field can be blank if photo already has image
+            $errors['image'] = false;
         }
 
         //validate image and get thumbnail
         if (!in_array(true, $errors)) {
-
             if (is_uploaded_file($_FILES['image']['tmp_name']) && ($_FILES['image']['error'] === UPLOAD_ERR_OK)) {
                 if (!empty($_FILES['image']['name']) && isset($_SESSION['image'])) {
                     unlink($_SESSION['image']);
                     unlink($_SESSION['thumbnail']);
+                }
+                //if changing image, we delete the old ones
+                if ($this->image) {
+                    unlink('../web/images/photos/' . $this->image);
+                    unlink('../web/images/photos/' . $this->thumbnail);
                 }
 
                 $file = $_FILES['image'];
@@ -195,13 +203,13 @@ class Photo extends AbstractEntity implements EntityInterface
                 $errors['image'] = true;
             }
             if (isset($_SESSION['image']) && !in_array(true, $errors)) {
+                //success
                 $data['image'] = $_SESSION['image'];
                 $data['thumbnail'] = $_SESSION['thumbnail'];
                 unset($_SESSION['image']);
                 unset($_SESSION['thumbnail']);
             }
         }
-
         return parent::prepareData($data, $errors);
     }
 }

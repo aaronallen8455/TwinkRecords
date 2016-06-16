@@ -140,6 +140,7 @@ abstract class AbstractEntity
         $db = DB::getConnection();
         $stmt = $db->query("SELECT * FROM " . $this::TABLE_NAME . " WHERE `" . $this::ID . "`=$id");
         $data = $stmt->fetch_assoc();
+        $stmt->close();
         return $this->setData($data);
     }
 

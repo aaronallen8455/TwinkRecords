@@ -57,8 +57,8 @@ if ($user->isLoggedIn()) {
                     case 'default':
                         exit('Invalid type specified.');
                 }
-                
-                if ($_POST['action'] !== 'save')
+                //load entity if ID is given
+                if (isset($_POST['id']))
                     $entity->load($_POST['id']);
             }
         }else exit('No type specified.');
@@ -93,8 +93,7 @@ if ($user->isLoggedIn()) {
                     $errors = [];
                     $data = $entity->prepareData($_POST, $errors);
                     if (!in_array(true, $errors)) {
-                        if (isset($_POST['id']))
-                            $entity->load($_POST['id']);
+
                         $entity->setData($data);
                         if ($entity->save()) {
                             \Core\Helper\Message::success("You saved the $type.");
@@ -105,8 +104,6 @@ if ($user->isLoggedIn()) {
                         }
                     }else{
                         // correct errors
-                        if (isset($_POST['id']))
-                            $entity->load($_POST['id']);
                         $entity->setData($data);
                         $core->loadTemplate('admin/edit');
                     }

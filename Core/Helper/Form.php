@@ -133,7 +133,9 @@ class Form
     public function dateTimeInput($name, $label)
     {
         //get existing values
-        if ($this->entity && !empty($this->entity->getProperty($name))) {
+        if ($this->entity)
+            $property = $this->entity->getProperty($name);
+        if (!empty($property)) {
             $dateValue = \DateTime::createFromFormat('Y-m-d H:i:s', $this->entity->getProperty($name));
             $monthValue = $dateValue->format('n');
             $yearValue = $dateValue->format('Y');
