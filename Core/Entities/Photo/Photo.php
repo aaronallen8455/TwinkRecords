@@ -123,7 +123,7 @@ class Photo extends AbstractEntity implements EntityInterface
                 //check file size
                 $size = round($file['size']/1024);
                 if ($size > 3000) {
-                    $errors['image'] = 'The uploaded file was too large.';
+                    $errors['image'] = true; // too big
                     unlink($file['tmp_name']);
                 }else{
                     //validate file type
@@ -134,7 +134,7 @@ class Photo extends AbstractEntity implements EntityInterface
                     //finfo_close($fileinfo);
                     $file_ext = substr($file['name'], -4);
                     if (/*!in_array($file_type, $allowed_mime) || */!in_array($file_ext, $allowed_extensions)) {
-                        $errors['image'] = 'The uploaded file was not of the proper type.';
+                        $errors['image'] = true; // not of proper type
                         unlink($file['tmp_name']);
                     }
                 }

@@ -54,7 +54,7 @@ abstract class AbstractEntity
     {
         $props = get_object_vars($this);
         foreach ($data as $item=>$value) {
-            if (!empty($value)) {
+            if (!empty($value) || $value == '0') {
                 if (array_key_exists($item, $props)) {
                     $this->$item = $value;
                 }
@@ -167,8 +167,11 @@ abstract class AbstractEntity
      */
     protected function checkDataCompletion(array $data, array $errors)
     {
+        // check if any values were left empty
         foreach (array_keys(get_object_vars($this)) as $prop) {
-            $errors[$prop] = empty($data[$prop]);
+            if (array_key_exists($prop, $data)) {
+                $errors[$prop] = empty($data[$prop]) && $data[$prop] != '0';
+            }else $errors[$prop] = true;
         }
         $errors[$this::ID] = false; // assigned on creation
 

@@ -9,6 +9,7 @@
 namespace Core\Entities\Page;
 
 
+use Core\DB\DB;
 use Core\Entities\AbstractEntity;
 use Core\Entities\EntityInterface;
 
@@ -75,8 +76,15 @@ class Page extends AbstractEntity implements EntityInterface
     public function prepareData(array $data, array &$errors)
     {
         $errors = $this->checkDataCompletion($data, $errors);
-        
-        if (empty($errors)) {
+
+        if (!in_array(true, $errors)) {
+            // check that url_key is unique
+            $db = DB::getConnection();
+            $page = $db->getPage($data['url_key']);
+            if (!is_null($page) && $this->getId() !== $page->getId()) {
+                $errors['url_key'] = true;
+            }
+
             $data['title'] = trim($data['title']);
             $data['url_key'] = str_replace(' ', '-', $data['url_key']);
             $data['url_key'] = preg_replace('/[^\w\d\-]/', '', $data['url_key']);

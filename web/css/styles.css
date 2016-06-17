@@ -7,6 +7,12 @@ body {
     background-color: black;
 }
 
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
 @font-face {
     font-family: 'chaparral';
     src: url('../font/chaparral.eot');
@@ -19,8 +25,8 @@ body {
 
 /* HEADER */
 
-.header {
-
+.header a {
+    text-decoration: none;
 }
 
 .header-splash {
@@ -281,7 +287,7 @@ body {
 
 /* BREAK POINTS */
 
-@media all and (max-width: 720px) {
+@media all and (max-width: 750px) {
 
     html {
         padding-top: 44px;
@@ -289,6 +295,16 @@ body {
 
     .header {
         border-bottom: solid 8px #ba0001;
+    }
+    .header-title {
+        font-size: 3.5em;
+        padding-right: 0;
+        padding-top: 5px;
+        padding-bottom: 40px;
+        text-align: left;
+        position: relative;
+        width: 180px;
+        margin-left: 35%;
     }
 
     .nav-menu {
