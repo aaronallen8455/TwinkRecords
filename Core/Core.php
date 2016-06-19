@@ -20,10 +20,8 @@ class Core
         // is local environment?
         $host = substr($_SERVER['HTTP_HOST'], 0, 5);
         if (in_array($host, array('local', '127.0', '192.1'))) { //determine if host is local or on the server.
-            //$this->local = true;
             define('IS_LOCAL', true);
         }else{
-            //$this->local = false;
             define('IS_LOCAL', false);
         }
 
@@ -155,12 +153,15 @@ class Core
 
     /**
      * Load a template file by name
-     * 
+     *
      * @param $name
+     * @return bool
      */
     public function loadTemplate($name)
     {
-        if (file_exists(BASE_URI . "/templates/$name.phtml")) {}
+        if (file_exists(BASE_URI . "/templates/$name.phtml")) {
             include BASE_URI . "/templates/$name.phtml";
+            return true;
+        }else return false;
     }
 }
