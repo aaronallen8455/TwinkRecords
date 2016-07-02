@@ -96,10 +96,10 @@ img {
 
 .content {
     background-color: white;
-    max-width: 900px;
+    max-width: 860px;
     min-height: 400px;
     margin: auto;
-    padding: 15px;
+    padding: 15px 35px;
     border-left: solid 6px #ba0001;
     border-right: solid 6px #ba0001;
 }
@@ -272,6 +272,7 @@ img {
 .entity-table form {
     display: inline;
 }
+
 /* FOOTER */
 
 .footer {
@@ -307,6 +308,10 @@ img {
         position: relative;
         width: 180px;
         margin-left: 35%;
+    }
+
+    .content {
+        padding: 15px;
     }
 
     .nav-menu {

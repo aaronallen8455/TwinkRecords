@@ -66,7 +66,7 @@ class DB
     }
 
     /**
-     * Get a page object from the title
+     * Get a page object from the url key
      * 
      * @param $key
      * @return Page|null
@@ -150,7 +150,7 @@ class DB
     }
 
     /**
-     * Get array of all photos
+     * Get array of all active photos
      * 
      * @return array
      */
